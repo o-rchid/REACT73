@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
-import NomalClientInfo from 'erp/logistic/production/page/MRP/MrpRegister';
+import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister';
 import MrpGather from 'erp/logistic/production/page/MRP/MrpGather';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 import { Box, Tab, Tabs } from '@mui/material';
 
-import MainCard from "../../../../../template/ui-component/cards/MainCard";
+import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import { searchGatherList, GatherInsert } from 'erp/logistic/production/saga/gatherSaga';
 import { searchMpsList } from 'erp/logistic/production/saga/mpsSaga';
 import { searchGetMrpList } from 'erp/logistic/production/saga/mrpSaga';
 import { searchMrpList, MrpRegisterList } from 'erp/logistic/production/saga/mrpSimulatorSaga';
-import {connect} from "react-redux";
-// import {TabPanel} from "@mui/lab";
-//****************************2020-11-25 박미노****************************************** */
+import { connect } from 'react-redux';
+// import { TabPanel } from '@mui/lab';
 
 function TabPanel({ children, value, index, ...other }) {
     return (
@@ -30,7 +29,6 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired
 };
 
-
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -38,9 +36,7 @@ function a11yProps(index) {
     };
 }
 
-
-
-const MrpContainer = props => {
+const MrpContainer = (props) => {
     const {
         searchMpsList,
         MrpList,
@@ -56,7 +52,7 @@ const MrpContainer = props => {
 
     const [value, setValue] = React.useState(0);
     const theme = useTheme();
-    const useStyles = makeStyles(theme => ({
+    const useStyles = makeStyles((theme) => ({
         root: {
             flexGrow: 1,
             backgroundColor: theme.palette.background.paper
@@ -102,25 +98,24 @@ const MrpContainer = props => {
                     mb: 3
                 }}
             >
-                <Tab component={Link} to="#" label="MRPR"  {...a11yProps(0)}/>
-                <Tab component={Link} to="#" label="MRPG"  {...a11yProps(1)}/>
+                <Tab component={Link} to="#" label="MRPR" {...a11yProps(0)} />
+                <Tab component={Link} to="#" label="MRPG" {...a11yProps(1)} />
             </Tabs>
 
-            {/* tab - details */}
+            {/* MRP 주생산계획 */}
             <TabPanel value={value} index={0}>
-                <NomalClientInfo />
+                <MrpRegister />
             </TabPanel>
 
             {/* tab - invoice */}
             <TabPanel value={value} index={1}>
                 <MrpGather />
             </TabPanel>
-
         </MainCard>
     );
-}
+};
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         MrpList: state.RootReducers.logistic.ProductionReducerCombine.mpslist.MrpList,
         MrpSimulatorList: state.RootReducers.logistic.ProductionReducerCombine.mrpsimulatorlist.MrpSimulatorList,

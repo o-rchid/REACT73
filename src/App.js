@@ -15,7 +15,7 @@ import { FirebaseProvider as AuthProvider } from 'template/contexts/FirebaseCont
 // import { Auth0Provider as AuthProvider } from 'contexts/Auth0Context';
 
 // ==============================|| APP ||============================== //
-
+//ThemeCustomization: 베리 테마 적용, RTLLayout: 언어별 왼오정렬
 const App = () => (
     <ThemeCustomization>
         {/* RTL layout */}

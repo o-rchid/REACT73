@@ -14,7 +14,7 @@ const icons = {
 
 const logiPages = {
     id: 'logi',
-    title: <FormattedMessage id="물류 업무" />,
+    title: <FormattedMessage defaultMessage="물류 업무" id="logi_menu" />,
     type: 'collapse',
     icon: icons.IconTruck,
     children: [base, base2, sales, perchase, production, outsourc, transport]

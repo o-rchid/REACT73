@@ -31,10 +31,14 @@ const Locales = ({ children }) => {
         });
     }, [locale]);
 
+    function errorHandle() {
+        console.log('react-Intl 에러 해결');
+    }
+
     return (
         <>
             {messages && (
-                <IntlProvider locale={locale} defaultLocale="en" messages={messages}>
+                <IntlProvider locale={locale} defaultLocale="en" messages={messages} onError={errorHandle}>
                     {children}
                 </IntlProvider>
             )}

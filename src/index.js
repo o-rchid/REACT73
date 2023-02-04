@@ -19,9 +19,9 @@ import 'assets/scss/style.scss';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-
 // ==============================|| REACT DOM RENDER  ||============================== //
-
+//ConfigProvider은 berry 설정관련
+//BrowserRouter은 라우터 쓰기 위해 설정, BASE_PATH는 config.js에 있음
 ReactDOM.render(
     <Provider store={store}>
         <ConfigProvider>

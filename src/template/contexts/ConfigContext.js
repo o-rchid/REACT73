@@ -108,6 +108,7 @@ function ConfigProvider({ children }) {
     );
 }
 
+//ConfigProvider의 propTypes 중 children 타입 anything can be rendered
 ConfigProvider.propTypes = {
     children: PropTypes.node
 };

@@ -10,19 +10,18 @@ import rootReducer from './reducer';
 
 // ==============================|| REDUX - MAIN STORE ||============================== //
 
-const sagaMiddleware = createSagaMiddleware();//사가 미
+const sagaMiddleware = createSagaMiddleware(); //사가 미
 const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false, immutableCheck: false }).concat(sagaMiddleware)
 });
 
-sagaMiddleware.run(rootSaga);//루트 사가 실행
-const persister = persistStore(store);
+sagaMiddleware.run(rootSaga); //루트 사가 실행
+const persister = persistStore(store); //store를 localstorage, sessionstorage에 저장해 리셋방지
 
 const { dispatch } = store;
 
 const useDispatch = () => useAppDispatch();
 const useSelector = useAppSelector;
-
 
 export { store, persister, dispatch, useSelector, useDispatch };

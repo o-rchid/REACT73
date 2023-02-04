@@ -17,29 +17,26 @@ import {
 import MyGrid from 'util/LogiUtil/MyGrid';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import { searchContractDetailInMpsAvailable} from '../MPS/mpsAxios';
+import { searchContractDetailInMpsAvailable } from '../MPS/mpsAxios';
 import contractlistcolumn from '../MPS/contractListColumn';
 import useInput from 'util/useInput';
 import { today } from 'erp/hr/util/lib';
 import { useThemeSwitcher } from 'mui-theme-switcher';
 import MrpDialog from './MrpDialog';
 import Swal from 'sweetalert2';
-import MainCard from "../../../../../template/ui-component/cards/MainCard";
-import MyCalendar from "../../../../../util/LogiUtil/MyCalendar";
-import {getDatePicker} from "../../../../hr/util/datePicker";
-import contractListColumn from "../MPS/contractListColumn";
-import MyDialog from "../../../../../util/LogiUtil/MyDialog";
+import MainCard from '../../../../../template/ui-component/cards/MainCard';
+import MyCalendar from '../../../../../util/LogiUtil/MyCalendar';
+import { getDatePicker } from '../../../../hr/util/datePicker';
+import contractListColumn from '../MPS/contractListColumn';
+import MyDialog from '../../../../../util/LogiUtil/MyDialog';
 
-const MrpRegister = props => {
-    console.log(today);
-    // const classes = UseStyles();
-    const fromDate = useInput(today);
-    const toDate = useInput(today);
+const MrpRegister = (props) => {
     const [rowData, setRowData] = useState(null);
     const [checkData, setCheckData] = useState(null);
     const [mrpDialog, setMrpDialog] = useState(false);
     const [gridApi, setGridApi] = useState(null);
     const [contractGridApi, setcontractGridApi] = useState();
+    //시작일 종료일
     const [calendarDate, setCalendarDate] = useState({
         startDate: today,
         endDate: today
@@ -47,12 +44,12 @@ const MrpRegister = props => {
     const [contractList, setContractList] = useState([]);
 
     const searchMps = useCallback(() => {
-        searchContractDetailInMpsAvailable(setContractList , calendarDate);
-    },[calendarDate]);
+        searchContractDetailInMpsAvailable(setContractList, calendarDate);
+    }, [calendarDate]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setRowData(props.MrpList);
-    },[props.MrpList])
+    }, [props.MrpList]);
 
     const mrpRegister = useCallback(() => {
         console.log(checkData);
@@ -63,19 +60,22 @@ const MrpRegister = props => {
         }
 
         setMrpDialog(true);
-    },[checkData]);
+    }, [checkData]);
 
     const mrpClose = () => {
         setMrpDialog(false);
     };
 
-    const onRowSelected = useCallback(e => {
-        setCheckData(e.api.getSelectedRows());
-        console.log(checkData);
-    }, [checkData]);
+    const onRowSelected = useCallback(
+        (e) => {
+            setCheckData(e.api.getSelectedRows());
+            console.log(checkData);
+        },
+        [checkData]
+    );
 
     const { dark } = useThemeSwitcher();
-    const onGridSizeChanged = params => {
+    const onGridSizeChanged = (params) => {
         var gridWidth = document.getElementById('grid-wrapper').offsetWidth;
         var columnsToShow = [];
         var columnsToHide = [];
@@ -100,61 +100,42 @@ const MrpRegister = props => {
         //console.log('columnsToShow',columnsToShow)
     };
 
-    const onGridReady = useCallback(event => {
-        console.log("onGridReady");
+    const onGridReady = useCallback((event) => {
+        console.log('onGridReady');
         setGridApi(event.api);
         setRowData([]);
         event.api.sizeColumnsToFit();
+    }, []);
 
-    },[]);
-
-    const onChangeDate = e => {
+    const onChangeDate = (e) => {
         let nextCalendarDate = { ...calendarDate };
         nextCalendarDate[e.target.id] = e.target.value;
         setCalendarDate(nextCalendarDate);
     };
 
-    const orderGirdApi = params => {
+    const orderGirdApi = (params) => {
         setcontractGridApi(params.api);
     };
 
-    function setMrpgrid () {
-        return(
+    function setMrpgrid() {
+        return (
             <Grid item xs={12}>
                 <div id="grid-wrapper">
                     <MyCalendar onChangeDate={onChangeDate} />
-                    <Button
-                        variant={'contained'}
-                        color={'secondary'}
-                        // className={dark ? classes.whiteButton : classes.searchButton}
-                        onClick={searchMps}
-                    >
+                    <Button variant={'contained'} color={'secondary'} onClick={searchMps}>
                         MPS조회
                     </Button>
-                    <Button
-                        variant={'contained'}
-                        color={'secondary'}
-                        name={'confirm'}
-                        onClick={mrpRegister}
-                        // className={dark ? classes.whiteButton : classes.searchButton}
-                    >
+                    <Button variant={'contained'} color={'secondary'} name={'confirm'} onClick={mrpRegister}>
                         MRP모의전개
                     </Button>
                 </div>
-
-
             </Grid>
-        )
+        );
     }
 
     return (
         <>
-            <MainCard
-                content={false}
-                title="MRP주생산계획"
-                secondary={setMrpgrid()}
-            >
-
+            <MainCard content={false} title="MRP주생산계획" secondary={setMrpgrid()}>
                 <MyGrid
                     column={contractlistcolumn}
                     list={contractList}
@@ -179,9 +160,7 @@ const MrpRegister = props => {
                         />
                     </div>
                 </MyDialog>
-
             </MainCard>
-
         </>
     );
 };
