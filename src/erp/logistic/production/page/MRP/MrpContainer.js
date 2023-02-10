@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from '@mui/material/styles';
 import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister';
 import MrpGather from 'erp/logistic/production/page/MRP/MrpGather';
@@ -13,7 +12,6 @@ import { searchMpsList } from 'erp/logistic/production/saga/mpsSaga';
 import { searchGetMrpList } from 'erp/logistic/production/saga/mrpSaga';
 import { searchMrpList, MrpRegisterList } from 'erp/logistic/production/saga/mrpSimulatorSaga';
 import { connect } from 'react-redux';
-// import { TabPanel } from '@mui/lab';
 
 function TabPanel({ children, value, index, ...other }) {
     return (
@@ -29,6 +27,7 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired
 };
 
+//Tab에 적용할 id, ARIA용
 function a11yProps(index) {
     return {
         id: `simple-tab-${index}`,
@@ -36,29 +35,9 @@ function a11yProps(index) {
     };
 }
 
-const MrpContainer = (props) => {
-    const {
-        searchMpsList,
-        MrpList,
-        searchMrpList,
-        MrpSimulatorList,
-        MrpRegisterList,
-        searchGetMrpList,
-        MrpGetList,
-        searchGatherList,
-        GatherList,
-        GatherInsert
-    } = props;
-
+const MrpContainer = () => {
     const [value, setValue] = React.useState(0);
     const theme = useTheme();
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            flexGrow: 1,
-            backgroundColor: theme.palette.background.paper
-        }
-    }));
-    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -107,7 +86,7 @@ const MrpContainer = (props) => {
                 <MrpRegister />
             </TabPanel>
 
-            {/* tab - invoice */}
+            {/* 소요량 취합 */}
             <TabPanel value={value} index={1}>
                 <MrpGather />
             </TabPanel>
@@ -124,10 +103,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, {
-    searchMpsList,
-    searchMrpList,
-    searchGetMrpList,
-    searchGatherList,
-    GatherInsert
-})(MrpContainer);
+export default MrpContainer;
