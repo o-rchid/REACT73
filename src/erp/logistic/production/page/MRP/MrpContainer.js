@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister';
+import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister2';
 import MrpGather from 'erp/logistic/production/page/MRP/MrpGather';
 import { Link } from 'react-router-dom';
 import { Box, Tab, Tabs } from '@mui/material';

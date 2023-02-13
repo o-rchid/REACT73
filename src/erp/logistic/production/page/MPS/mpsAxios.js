@@ -11,14 +11,12 @@ export const searchContractDetailInMpsAvailable = (setContractList, calendarDate
             }
         })
         .then(({ data }) => {
-            console.log('여기 시작?');
             if (data.errorCode < 0) {
                 Swal.fire({
                     icon: data.errorCode < 0 ? 'error' : 'success',
                     title: data.errorMsg
                 });
             }
-            console.log('여기 오니?');
             setContractList(data.gridRowJson);
         })
         .catch((e) => {
@@ -28,10 +26,11 @@ export const searchContractDetailInMpsAvailable = (setContractList, calendarDate
             });
         });
 };
-export const convertContractDetailToMps = (contract) => {
-    console.log(contract);
+export const convertContractDetailToMps = (newMps) => {
+    console.log('convertContractDetailToMps 실행');
+    console.log(newMps);
     axios
-        .post('http://localhost:9102/production/mps/contractdetail', contract)
+        .post('http://localhost:9102/production/mps/contractdetail', newMps)
         .then(({ data }) => {
             Swal.fire({
                 icon: data.errorCode < 0 ? 'error' : 'success',
@@ -51,13 +50,10 @@ export const searchMpsInfo = (setMpsList, calendarDate) => {
         .get('http://localhost:9102/production/mps/list', {
             params: {
                 startDate: calendarDate.startDate,
-                endDate: calendarDate.endDate,
-                includeMrpApply: 'includeMrpApply'
+                endDate: calendarDate.endDate
             }
         })
         .then(({ data }) => {
-            console.log('data ====' + JSON.stringify(data));
-            console.log('데이터가 Template에 오니?');
             setMpsList(data.gridRowJson);
         })
         .catch((e) => {

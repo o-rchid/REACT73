@@ -7,5 +7,5 @@ import dayworkerandsalary from '../dayworker/saga';
 
 export default function* HrRootSaga() {
     // all 함수는 여러 사가를 합쳐주는 역할을 합니다.
-    yield all([attdSaga(), baseSaga(), SalarySaga(), EmpSaga(),dayworkerandsalary()]);
+    yield all([attdSaga(), baseSaga(), SalarySaga(), EmpSaga(), dayworkerandsalary()]);
 }

@@ -2,10 +2,9 @@ import { createAction } from 'redux-actions';
 import createRequestSaga from 'util/createRequestSaga';
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@최락창@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-// createRequestSaga.js를 거친다음에 
+// createRequestSaga.js를 거친다음에
 // action.type = loading/FINISH_LOADING
 // action.payload = travel/SELECT_TRAVEL_START
-
 
 //*********************************일근태 crud***************************/
 export const INSERT_TRAVEL_SUCCESS = 'travel/INSERT_TRAVEL_START_SUCCESS';
@@ -19,15 +18,10 @@ export const DELETE_TRAVEL_FAILURE = 'travel/DELETE_TRAVEL_START_FAILURE';
 const initialState = {
     restAttdList: [],
     errorMsg: '',
-    errorCode: '',
+    errorCode: ''
 };
 
 const travel = (state = initialState, action) => {
-
-    console.log("TRAVEL 액션 페이로드");
-    console.log(action.payload);
-    console.log("TRAVEL 액션 타입");
-    console.log(action.type);
     switch (action.type) {
         case INSERT_TRAVEL_SUCCESS:
             return {
@@ -44,7 +38,7 @@ const travel = (state = initialState, action) => {
                 ...state,
                 attdData: action.payload
             };
-            
+
         case SELECT_TRAVEL_FAILURE:
             return {
                 ...state
@@ -55,8 +49,8 @@ const travel = (state = initialState, action) => {
                 errorMsg: action.payload
             };
         default:
-           return state;
-            }
-        };
-       
+            return state;
+    }
+};
+
 export default travel;

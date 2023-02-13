@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Button ,TextField, CssBaseline, Grid, Typography, Container, MenuItem, Select, InputLabel, Avatar} from '@mui/material';
-import {addWorkplaceTO} from "../action/BasicInfoAction";
-import {useDispatch} from "react-redux";
+import { Button, TextField, CssBaseline, Grid, Typography, Container, MenuItem, Select, InputLabel, Avatar } from '@mui/material';
+import { addWorkplaceTO } from '../action/BasicInfoAction';
+import { useDispatch } from 'react-redux';
 
-const usestyles = makeStyles(theme => ({
+const usestyles = makeStyles((theme) => ({
     paper: {
         display: 'flex',
         flexDirection: 'column',
@@ -22,7 +22,6 @@ const usestyles = makeStyles(theme => ({
         margin: theme.spacing(3, 0, 2)
     }
 }));
-
 
 const today = () => {
     let current = new Date();
@@ -44,7 +43,7 @@ export default function AddWorkplace(props) {
     const classes = usestyles();
     const dispatch = useDispatch();
 
-    const onChange = e => {
+    const onChange = (e) => {
         if (e.target.name === 'isClosed') {
             if (e.target.value === 'Yes') {
                 setDisplayClosed('block');
@@ -64,20 +63,20 @@ export default function AddWorkplace(props) {
         }
     };
 
-    const {close} = props;
+    const { close } = props;
     const onSubmit = (e, props) => {
         e.preventDefault();
         //console.log(workplaceTo)
         dispatch(addWorkplaceTO({ workplaceTo }));
-        close
+        close();
     };
 
-    const handleClose = e => {
+    const handleClose = (e) => {
         setOpen(false);
         setOpen2(false);
     };
 
-    const handleOpen = e => {
+    const handleOpen = (e) => {
         if (e.target.id === 'isClosed') {
             setOpen(true);
         } else {
@@ -98,7 +97,7 @@ export default function AddWorkplace(props) {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                <form className={classes.form} onSubmit={onSubmit} >
+                <form className={classes.form} onSubmit={onSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -325,14 +324,7 @@ export default function AddWorkplace(props) {
                             />
                         </Grid>
                     </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        className={classes.submit}
-                        onclick={props.close}
-                    >
+                    <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit} onclick={close}>
                         사업장 등록
                     </Button>
                 </form>

@@ -6,19 +6,24 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useThemeSwitcher } from 'mui-theme-switcher';
 
 function MyGrid(props) {
+    //그리드에 뿌릴 데이터와 컬럼명
     const list = props.list;
+    const column = props.column;
+    //calc: 속성값을 사칙연산으로 정할 수 있음
     var size = 'calc(100vh - 220px)';
     var align = 'right';
+    const { dark } = useThemeSwitcher();
+
     if (props.align !== undefined) {
         align = props.align;
     }
-    var marginTop = '';
     if (props.children !== undefined) {
         size = 'calc(100vh - 260px)';
     }
     if (props.size !== undefined) {
         size = props.size;
     }
+
     const useStyles = makeStyles((theme) => ({
         root: {
             flexGrow: 1
@@ -42,7 +47,7 @@ function MyGrid(props) {
         }
     }));
 
-    const column = props.column;
+    const classes = useStyles();
 
     const onCellClicked = (id) => {
         if (props.onCellClicked !== undefined) props.onCellClicked(id);
@@ -61,10 +66,7 @@ function MyGrid(props) {
         if (props.onCellValueChanged !== undefined) props.onCellValueChanged(params);
     };
 
-    const { dark } = useThemeSwitcher();
-
     const onGridSizeChanged = (params) => {
-        var gridWidth = document.getElementById('grid-wrapper').offsetWidth;
         var columnsToShow = [];
         var columnsToHide = [];
         var totalColsWidth = 0;
@@ -72,11 +74,8 @@ function MyGrid(props) {
         for (var i = 0; i < allColumns.length; i++) {
             var column = allColumns[i];
             totalColsWidth += column.getMinWidth();
-            // console.log('totalColsWidth',totalColsWidth)
             if (column.colDef.hide === true) {
-                //if (totalColsWidth > gridWidth) {
                 columnsToHide.push(column.colId);
-                //}
             } else {
                 columnsToShow.push(column.colId);
             }
@@ -84,15 +83,11 @@ function MyGrid(props) {
         params.columnApi.setColumnsVisible(columnsToShow, true);
         params.columnApi.setColumnsVisible(columnsToHide, false);
         params.api.sizeColumnsToFit();
-        // console.log('columnsToHide',columnsToHide)
-        //console.log('columnsToShow',columnsToShow)
     };
-
-    const classes = useStyles();
 
     return (
         <div id="grid-wrapper" className={classes.root}>
-            {props.title !== undefined ? ( // props.title이 넘어오면 AppBar를 출력 함 -> 템플릿 모양 수정을 다 끝내면 AppBar 삭제
+            {props.title !== undefined ? ( // props.title이 넘어오면 출력 함 -> 템플릿 모양 수정을 다 끝내면 AppBar 삭제
                 <AppBar position="static" className={classes.appBar}>
                     <Typography className={classes.title}>{props.title}</Typography>
                 </AppBar>
@@ -102,6 +97,7 @@ function MyGrid(props) {
             <div align={align} className={classes.btn}>
                 {props.children}
             </div>
+
             <div
                 className={dark ? 'ag-theme-alpine-dark' : 'ag-theme-material'}
                 enableColResize="true" //칼럼 리사이즈 허용 여부

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, memo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Paper,
     TextField,
@@ -23,7 +23,7 @@ import contractlistcolumn from '../MPS/contractListColumn';
 import useInput from 'util/useInput';
 import { today } from 'erp/hr/util/lib';
 import { useThemeSwitcher } from 'mui-theme-switcher';
-import MrpDialog from './MrpDialog';
+import MrpDialog from './MrpDialog2';
 import Swal from 'sweetalert2';
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import MyCalendar from '../../../../../util/LogiUtil/MyCalendar';
@@ -32,27 +32,24 @@ import contractListColumn from '../MPS/contractListColumn';
 import MyDialog from '../../../../../util/LogiUtil/MyDialog';
 
 const MrpRegister = () => {
-    const [rowData, setRowData] = useState(null);
     const [checkData, setCheckData] = useState(null);
     const [mrpDialog, setMrpDialog] = useState(false);
     const [gridApi, setGridApi] = useState(null);
     const [contractGridApi, setcontractGridApi] = useState();
-
     //시작일 종료일
     const [calendarDate, setCalendarDate] = useState({
         startDate: today,
         endDate: today
     });
+    //그리드 데이터 - 수주 상세
     const [contractList, setContractList] = useState([]);
+
+    //------------------이벤트----------------------
 
     //MPS 조회
     const searchMps = useCallback(() => {
         searchContractDetailInMpsAvailable(setContractList, calendarDate);
     }, [calendarDate]);
-
-    useEffect(() => {
-        setRowData(props.MrpList);
-    }, [props.MrpList]);
 
     //MRP 모의전개 - 선택한 열 있으면 mrpDialog true
     const mrpRegister = useCallback(() => {
@@ -89,6 +86,9 @@ const MrpRegister = () => {
         setcontractGridApi(params.api);
     };
 
+    //----------------------------------------------------------
+    const dispatch = useDispatch();
+
     function setMrpgrid() {
         return (
             <Grid item xs={12}>
@@ -120,14 +120,7 @@ const MrpRegister = () => {
 
                 <MyDialog open={mrpDialog} close={mrpClose} maxWidth={'90%'}>
                     <div>
-                        <MrpDialog
-                            searchMrpList={props.searchMrpList}
-                            checkData={checkData}
-                            setCheckData={setCheckData}
-                            MrpSimulatorList={props.MrpSimulatorList}
-                            MrpRegisterList={props.MrpRegisterList}
-                            mrpRegisterGridApi={gridApi}
-                        />
+                        <MrpDialog />
                     </div>
                 </MyDialog>
             </MainCard>

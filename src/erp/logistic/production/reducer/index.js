@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import gatherlist from 'erp/logistic/production/reducer/gatherReducer';
-import mpslist from 'erp/logistic/production/reducer/mpsReducer';
+import mpsReducer from 'erp/logistic/production/reducer/mpsReducer';
 import mrplist from 'erp/logistic/production/reducer/mrpReducer';
 import mrpsimulatorlist from 'erp/logistic/production/reducer/mrpSimulatorReducer';
 
 const ProductionReducerCombine = combineReducers({
     gatherlist,
-    mpslist,
+    mpsReducer,
     mrplist,
-    mrpsimulatorlist,
+    mrpsimulatorlist
 });
 
 export default ProductionReducerCombine;

@@ -7,8 +7,6 @@ const initialState = {
     DepartmentList: []
 };
 
-console.log('               @@@     basicInfoReducer');
-
 function basicinfo(state = initialState, action) {
     switch (action.type) {
         case types.WORKPLACE_LIST:
@@ -53,7 +51,7 @@ function basicinfo(state = initialState, action) {
             };
 
         case types.SAVE_WORKPLACE_SUCCESS:
-            let result = state.workplaceList.filter(workplace => workplace.status !== 'DELETE');
+            let result = state.workplaceList.filter((workplace) => workplace.status !== 'DELETE');
             return {
                 ...state,
                 workplaceList: result

@@ -10,15 +10,18 @@ import MpsDialog from './MpsDialog';
 import { Button, Grid } from '@mui/material';
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import MyDialog from '../../../../../util/LogiUtil/MyDialog';
+import { dispatch } from 'template/store';
+import * as types from '../../reducer/mpsReducer';
+import { useSelector } from 'react-redux';
 
 const MpsContainer = () => {
-    // MPS 등록 가능
-    const [contractList, setContractList] = useState([]);
+    // MPS 등록 가능 조회
+    const contractList = useSelector((state) => state.RootReducers.logistic.production.mpsReducer.ContractList);
     // Ag-grid API
-    const [contractGridApi, setcontractGridApi] = useState();
+    const [agGridApi, setagGridApi] = useState();
     // 시작 종료일
     const [calendarDate, setCalendarDate] = useState({
-        startDate: '2020-01-01',
+        startDate: today,
         endDate: today
     });
     // MpsDiaog open 상태 관리
@@ -33,19 +36,26 @@ const MpsContainer = () => {
         setCalendarDate(nextCalendarDate);
     };
 
-    // axios로 MPS 등록 가능 조회
+    // MPS 등록 가능 조회
     const onClickSearchContract = useCallback(() => {
-        searchContractDetailInMpsAvailable(setContractList, calendarDate);
+        dispatch({
+            type: types.SEARCH_MPS_AVILABLE_START,
+            param: {
+                startDate: calendarDate.startDate,
+                endDate: calendarDate.endDate,
+                searchCondition: 'contractDate'
+            }
+        });
     }, [calendarDate]);
 
     // onGridReady를 통해 grid API 넘어옴
     const orderGirdApi = (params) => {
-        setcontractGridApi(params.api);
+        setagGridApi(params.api);
     };
 
     // MPS 등록 클릭
     const onClickMpsInsert = () => {
-        let selectNodes = contractGridApi.getSelectedNodes();
+        let selectNodes = agGridApi.getSelectedNodes();
         if (selectNodes.length === 0) {
             return Swal.fire({
                 icon: 'error',
@@ -60,14 +70,11 @@ const MpsContainer = () => {
             });
         }
 
-        let newRow = { ...row, planClassification: '수주상세' };
+        let newMps = { ...row, planClassification: '수주상세' };
 
-        console.log('newRow');
-        console.log(newRow);
-        console.log(selectNodes);
-        convertContractDetailToMps(newRow);
-        let selectRows = contractGridApi.getSelectedRows();
-        contractGridApi.updateRowData({ remove: selectRows });
+        convertContractDetailToMps(newMps);
+        let selectRows = agGridApi.getSelectedRows();
+        agGridApi.updateRowData({ remove: selectRows });
     };
 
     // MPS 조회 클릭 - MpsDialog open에 true 전달
