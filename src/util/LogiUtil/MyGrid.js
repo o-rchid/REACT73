@@ -119,6 +119,7 @@ function MyGrid(props) {
                     }} //body 가운데 정렬
                     onCellClicked={onCellClicked} //셀 한번클릭
                     onGridReady={onGridReady} //onload 이벤트와 유사한 것, gria API 제공
+                    rowMultiSelectWithClick={true}
                     paginationAutoPageSize={true}
                     pagination={true}
                     onRowClicked={onRowClicked}

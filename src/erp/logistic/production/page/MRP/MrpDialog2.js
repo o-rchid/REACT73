@@ -9,7 +9,6 @@ const MrpDialog = ({ checkData, setCheckData, searchMrpList, MrpSimulatorList, M
     const fromDate = useInput(today);
     const [mrpDataList, setMrpDataList] = useState(MrpSimulatorList);
     const [gridApi, setGridApi] = useState(null);
-    console.log(mrpDataList);
 
     // useEffect(() => {
     //     const size = checkData.length;

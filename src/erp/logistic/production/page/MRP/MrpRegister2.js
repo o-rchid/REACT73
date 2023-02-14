@@ -5,7 +5,8 @@ import MyGrid from 'util/LogiUtil/MyGrid';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import { searchContractDetailInMpsAvailable } from '../MPS/mpsAxios';
-import contractlistcolumn from '../MPS/contractListColumn';
+import * as types from '../../reducer/mrpReducer';
+import mpsColumn from '../MPS/mpsListColumn';
 import { today } from 'erp/hr/util/lib';
 import MrpDialog from './MrpDialog2';
 import Swal from 'sweetalert2';
@@ -15,6 +16,7 @@ import { getDatePicker } from '../../../../hr/util/datePicker';
 import MyDialog from '../../../../../util/LogiUtil/MyDialog';
 
 const MrpRegister = () => {
+    const dispatch = useDispatch();
     //그리드 값 선택
     const [checkData, setCheckData] = useState(null);
     //MrpDialog open
@@ -26,18 +28,24 @@ const MrpRegister = () => {
         endDate: today
     });
     //그리드 데이터 - 수주 상세
-    const [contractList, setContractList] = useState([]);
+    const gridMrpList = useSelector((state) => state.RootReducers.logistic.production.mrpReducer.MrpList);
     //MrpDialog로 넘겨줄 값
     const mrpList = useSelector((state) => state.RootReducers.logistic.production.mpsReducer.MrpList);
     const mrpsimulatorList = useSelector((state) => state.RootReducers.logistic.production.mrpsimulatorlist.MrpSimulatorList);
-    const mrpgetList = useSelector((state) => state.RootReducers.logistic.production.mrplist.MrpGetList);
+    const mrpgetList = useSelector((state) => state.RootReducers.logistic.production.mrpReducer.MrpGetList);
     const getherList = useSelector((state) => state.RootReducers.logistic.production.gatherlist.GatherList);
 
     //------------------이벤트----------------------
 
     //MPS 조회
     const searchMps = useCallback(() => {
-        searchContractDetailInMpsAvailable(setContractList, calendarDate);
+        dispatch({
+            type: types.SEARCH_MRP_START,
+            param: {
+                startDate: calendarDate.startDate,
+                endDate: calendarDate.endDate
+            }
+        });
     }, [calendarDate]);
 
     //MRP 모의전개 - 선택한 열 있으면 mrpDialog true
@@ -77,9 +85,7 @@ const MrpRegister = () => {
         setcontractGridApi(params.api);
     };
 
-    //----------------------------------------------------------
-    const dispatch = useDispatch();
-
+    //MainCard secondary
     function setMrpgrid() {
         return (
             <Grid item xs={12}>
@@ -96,15 +102,17 @@ const MrpRegister = () => {
         );
     }
 
+    //----------------------------------------------------------
+
     return (
         <>
             <MainCard content={false} title="MRP주생산계획" secondary={setMrpgrid()}>
                 <MyGrid
-                    column={contractlistcolumn}
-                    list={contractList}
+                    column={mpsColumn}
+                    list={gridMrpList}
                     onCellClicked={undefined}
                     onRowSelected={onRowSelected}
-                    rowSelection="single"
+                    rowSelection="multiple"
                     api={gridApi}
                     components={{ datePicker: getDatePicker() }}
                 />

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import MyGrid from 'util/LogiUtil/MyGrid';
-import { TextField } from '@material-ui/core';
 import axios from 'axios';
-import MyDialog from 'util/LogiUtil/SimpleModal';
 import MainCard from '../../../../template/ui-component/cards/MainCard';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import CardSecondaryAction from '../../../../template/ui-component/cards/CardSecondaryAction';
-import { DataGrid, GridEventListener } from '@mui/x-data-grid';
 import SimpleModal from 'util/LogiUtil/SimpleModal';
 
 function CompanyInfo(props) {
@@ -85,11 +81,7 @@ function CompanyInfo(props) {
     }, []);
     return (
         <>
-            <MainCard
-                content={false}
-                title="회사 정보"
-                secondary={<CardSecondaryAction link="https://next.material-ui.com/components/tables/" />}
-            >
+            <MainCard content={false} title="회사 정보" secondary={<CardSecondaryAction />}>
                 {/* table */}
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="회사 정보">

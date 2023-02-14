@@ -1,13 +1,5 @@
 import axios from 'api/logiApi'; //'http://localhost:9102'
 
-export const searchMpsList = (param) =>
-    axios.get('/production/searchMpsInfo', {
-        params: {
-            startDate: param.payload.startDate,
-            endDate: param.payload.endDate
-        }
-    });
-
 export const searchMrpList = (param) =>
     axios.get('/logistics/production/openMrp', {
         params: {
@@ -60,4 +52,12 @@ export const searchContractDetailInMpsAvailable = (action) =>
 
 export const convertContractDetailToMps = (action) =>
     axios.post('http://localhost:9102/production/mps/contractdetail', { newMps: action.param.newMps });
-//------------------
+//-------MRP--------
+
+export const searchMpsList = (action) =>
+    axios.get('http://localhost:9102/production/mps/list', {
+        params: {
+            startDate: action.param.startDate,
+            endDate: action.param.endDate
+        }
+    });
