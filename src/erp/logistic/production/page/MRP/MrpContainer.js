@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister2';
+import MrpRegister from 'erp/logistic/production/page/MRP/MrpRegister';
 import MrpGather from 'erp/logistic/production/page/MRP/MrpGather';
 import { Link } from 'react-router-dom';
 import { Box, Tab, Tabs } from '@mui/material';
@@ -78,17 +78,11 @@ const MrpContainer = () => {
                 }}
             >
                 <Tab component={Link} to="#" label="MRPR" {...a11yProps(0)} />
-                <Tab component={Link} to="#" label="MRPG" {...a11yProps(1)} />
             </Tabs>
 
             {/* MRP 주생산계획 */}
             <TabPanel value={value} index={0}>
                 <MrpRegister />
-            </TabPanel>
-
-            {/* 소요량 취합 */}
-            <TabPanel value={value} index={1}>
-                <MrpGather />
             </TabPanel>
         </MainCard>
     );

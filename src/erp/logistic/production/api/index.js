@@ -7,16 +7,6 @@ export const searchMrpList = (param) =>
         }
     });
 
-export const mrpInsert = (param) =>
-    axios.put(
-        '/logistics/production/registerMrp',
-        {
-            mrpRegisterDate: param.payload.mrpRegisterDate,
-            batchList: param.payload.batchList
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-    );
-
 export const searchGetMpsList = (param) =>
     axios.get('/logistics/production/getMrpList', {
         params: {
@@ -52,8 +42,8 @@ export const searchContractDetailInMpsAvailable = (action) =>
 
 export const convertContractDetailToMps = (action) =>
     axios.post('http://localhost:9102/production/mps/contractdetail', { newMps: action.param.newMps });
-//-------MRP--------
 
+//-------MRP--------
 export const searchMpsList = (action) =>
     axios.get('http://localhost:9102/production/mps/list', {
         params: {
@@ -61,3 +51,18 @@ export const searchMpsList = (action) =>
             endDate: action.param.endDate
         }
     });
+
+export const mrpSimulator = (action) =>
+    axios.get('http://localhost:9102/production/mrp/open', {
+        params: {
+            mpsNoList: action.param.mpsNoList
+        }
+    });
+
+export const mrpInsert = (action) =>
+    axios.get('http://localhost:9102/production/mrp', {
+        params: {
+            mrpRegisterDate: action.param.mrpRegisterDate
+        }
+    });
+6;

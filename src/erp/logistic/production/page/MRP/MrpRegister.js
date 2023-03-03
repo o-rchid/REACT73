@@ -1,58 +1,50 @@
 import React, { useState, useCallback, memo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import {
-    Paper,
-    TextField,
-    Button,
-    Grid,
-    AppBar,
-    InputLabel,
-    Typography,
-    Toolbar,
-    MenuItem,
-    Select,
-    FormControl,
-    OutlinedInput,
-    NativeSelect
-} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Grid } from '@mui/material';
 import MyGrid from 'util/LogiUtil/MyGrid';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import { searchContractDetailInMpsAvailable } from '../MPS/mpsAxios';
-import contractlistcolumn from '../MPS/contractListColumn';
-import useInput from 'util/useInput';
+import * as types from '../../reducer/mrpReducer';
+import * as simultypes from '../../reducer/mrpSimulatorReducer';
+import mpsColumn from '../MPS/mpsListColumn';
 import { today } from 'erp/hr/util/lib';
-import { useThemeSwitcher } from 'mui-theme-switcher';
 import MrpDialog from './MrpDialog';
 import Swal from 'sweetalert2';
 import MainCard from '../../../../../template/ui-component/cards/MainCard';
 import MyCalendar from '../../../../../util/LogiUtil/MyCalendar';
 import { getDatePicker } from '../../../../hr/util/datePicker';
-import contractListColumn from '../MPS/contractListColumn';
 import MyDialog from '../../../../../util/LogiUtil/MyDialog';
 
 const MrpRegister = () => {
-    const [rowData, setRowData] = useState(null);
+    const dispatch = useDispatch();
+    //그리드 값 선택
     const [checkData, setCheckData] = useState(null);
+    //MrpDialog open
     const [mrpDialog, setMrpDialog] = useState(false);
-    const [gridApi, setGridApi] = useState(null);
     const [contractGridApi, setcontractGridApi] = useState();
-
     //시작일 종료일
     const [calendarDate, setCalendarDate] = useState({
         startDate: today,
         endDate: today
     });
-    const [contractList, setContractList] = useState([]);
+    //그리드 데이터 - 수주 상세
+    const gridMrpList = useSelector((state) => state.RootReducers.logistic.production.mrpReducer.MrpList);
+    //MrpDialog로 넘겨줄 값
+    const mrpList = useSelector((state) => state.RootReducers.logistic.production.mpsReducer.MrpList);
+    const getherList = useSelector((state) => state.RootReducers.logistic.production.gatherlist.GatherList);
+
+    //----------------------이벤트---------------------------------
 
     //MPS 조회
     const searchMps = useCallback(() => {
-        searchContractDetailInMpsAvailable(setContractList, calendarDate);
+        dispatch({
+            type: types.SEARCH_MRP_START,
+            param: {
+                startDate: calendarDate.startDate,
+                endDate: calendarDate.endDate
+            }
+        });
     }, [calendarDate]);
-
-    useEffect(() => {
-        setRowData(props.MrpList);
-    }, [props.MrpList]);
 
     //MRP 모의전개 - 선택한 열 있으면 mrpDialog true
     const mrpRegister = useCallback(() => {
@@ -62,7 +54,16 @@ const MrpRegister = () => {
             Swal.fire('알림', '모의전개할 mps를 선택하십시오.', 'info');
             return;
         }
-
+        let checkMpsNo = [];
+        checkData.forEach((ele) => {
+            checkMpsNo.push(ele.mpsNo);
+        });
+        dispatch({
+            type: simultypes.MRPSIMULATOR_START,
+            param: {
+                mpsNoList: checkMpsNo
+            }
+        });
         setMrpDialog(true);
     }, [checkData]);
 
@@ -79,16 +80,19 @@ const MrpRegister = () => {
         [checkData]
     );
 
+    //달력 값 바꼈을 때 실행
     const onChangeDate = (e) => {
         let nextCalendarDate = { ...calendarDate };
         nextCalendarDate[e.target.id] = e.target.value;
         setCalendarDate(nextCalendarDate);
     };
 
-    const orderGirdApi = (params) => {
+    //그리드 API 가져오기
+    const gridApi = (params) => {
         setcontractGridApi(params.api);
     };
 
+    //MainCard secondary
     function setMrpgrid() {
         return (
             <Grid item xs={12}>
@@ -105,28 +109,28 @@ const MrpRegister = () => {
         );
     }
 
+    //-----------------------------------------------------------------------
+
     return (
         <>
             <MainCard content={false} title="MRP주생산계획" secondary={setMrpgrid()}>
                 <MyGrid
-                    column={contractlistcolumn}
-                    list={contractList}
+                    column={mpsColumn}
+                    list={gridMrpList}
                     onCellClicked={undefined}
                     onRowSelected={onRowSelected}
-                    rowSelection="single"
-                    api={orderGirdApi}
+                    rowSelection="multiple"
+                    api={gridApi}
                     components={{ datePicker: getDatePicker() }}
                 />
 
                 <MyDialog open={mrpDialog} close={mrpClose} maxWidth={'90%'}>
                     <div>
                         <MrpDialog
-                            searchMrpList={props.searchMrpList}
+                            searchMrpList={mrpList}
                             checkData={checkData}
-                            setCheckData={setCheckData}
-                            MrpSimulatorList={props.MrpSimulatorList}
-                            MrpRegisterList={props.MrpRegisterList}
-                            mrpRegisterGridApi={gridApi}
+                            serCheckData={setCheckData}
+                            mrpRegisterGridApi={contractGridApi}
                         />
                     </div>
                 </MyDialog>
